@@ -217,29 +217,33 @@ end
 
 #### Custom testing tasks
 
-require 'rubygems' 
-require 'spec/rake/spectask'
-Rake::Task[:default].prerequisites.clear
-Spec::Rake::SpecTask.new do |t|
-  t.spec_opts = ["--options #{File.dirname(__FILE__) + '/spec/spec.opts'}"] 
-  t.spec_files = FileList['spec/**/*_spec.rb'] 
-end 
+begin
+  require 'rubygems'
+  require 'spec/rake/spectask'
+  Rake::Task[:default].prerequisites.clear
+  Spec::Rake::SpecTask.new do |t|
+    t.spec_opts = ["--options #{File.dirname(__FILE__) + '/spec/spec.opts'}"]
+    t.spec_files = FileList['spec/**/*_spec.rb']
+  end
 
-task :default => :spec
-task :spec => [:ensure_diff_lcs, :compile]
+  task :default => :spec
+  task :spec => [:ensure_diff_lcs, :compile]
 
-task :ensure_diff_lcs do
-  # A little insurance against rake on JRuby not passing the error from load-diff-lcs.rb
-  begin
-    require 'diff/lcs'
-  rescue LoadError
+  task :ensure_diff_lcs do
+    # A little insurance against rake on JRuby not passing the error from load-diff-lcs.rb
     begin
-      require 'rubygems' unless ENV['NO_RUBYGEMS']
       require 'diff/lcs'
     rescue LoadError
-      raise "You must gem install diff-lcs to run the specs."
+      begin
+        require 'rubygems' unless ENV['NO_RUBYGEMS']
+        require 'diff/lcs'
+      rescue LoadError
+        raise "You must gem install diff-lcs to run the specs."
+      end
     end
   end
+rescue LoadError
+  $stderr.puts "RSpec not found, tests won't be available. Please install rspec with gem install rspec"
 end
 
 task :remove_other_platforms do
