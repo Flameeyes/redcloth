@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/spec_helper'
+require File.expand_path('../spec_helper', __FILE__)
 
 describe "Benchmarking", :type => :formatter do
   fixtures = self.fixtures

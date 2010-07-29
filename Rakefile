@@ -1,4 +1,4 @@
-require 'lib/redcloth/version'
+require File.expand_path('../lib/redcloth/version', __FILE__)
 require 'rubygems'
 gem 'echoe', '>= 4.1'
 require 'echoe'

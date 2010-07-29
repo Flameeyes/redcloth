@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/spec_helper'
+require File.expand_path('../spec_helper', __FILE__)
 
 # http://www.ralree.info/2006/9/13/extending-redcloth
 module RedClothSmileyExtension
